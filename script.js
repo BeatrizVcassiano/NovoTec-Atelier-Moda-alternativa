@@ -3,10 +3,9 @@
   NOVOTEC ATELIER — CATÁLOGO DE PRODUTOS E LÓGICA DA LOJA
 =============================================================================
   CONTEÚDO COMPLETO E OTIMIZADO:
-  - Lote 1 ao Lote 9 (roupa1 até roupa89)
+  - Lote 1 ao Lote 9 (roupa1 até roupa90)
+  - Categorias e descrições devidamente ajustadas
   - Suporte a Lazy Loading (`loading="lazy"`) em todas as imagens
-  - Resolução direta de caminhos de imagem (imagens/roupaX.ext)
-  - Preços reajustados para simulação de promoção com 30% OFF
 =============================================================================
 */
 
@@ -134,7 +133,7 @@ const products = [
   {
     id: "corset-skirt-goth-bride",
     name: "Conjunto Corset & Saia de Tule Gótico",
-    category: "vestidos",
+    category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
     image: "imagens/roupa14.jpeg",
@@ -142,17 +141,17 @@ const products = [
   },
   {
     id: "look-complete-y2k-street",
-    name: "Calça Jeans Cargo com Tiras Utilitárias",
-    category: "calcas",
+    name: "Conjunto Jeans Flare & Blusa Ombro a Ombro Y2K",
+    category: "conjuntos",
     price: 314.14,
     badge: "30% OFF",
     image: "imagens/roupa15.jpeg",
-    description: "Calça jeans boca de sino com fivelas horizontais nas coxas e lavagem verde-militar desbotada."
+    description: "Look Y2K completo composto por calça jeans boca de sino com tiras e fivelas nas coxas, blusa preta de ombro caído, mala e tamancos de plataforma."
   },
   {
     id: "casaco-zip-hoodie-grunge",
     name: "Moletom Zip Hoodie Washed Gray",
-    category: "jaquetas",
+    category: "blusas",
     price: 285.57,
     badge: "30% OFF",
     image: "imagens/roupa16.jpeg",
@@ -161,7 +160,7 @@ const products = [
   {
     id: "top-ombro-a-ombro-drapeado",
     name: "Blusa Ombro a Ombro Drapeada",
-    category: "blusas",
+    category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
     image: "imagens/roupa17.jpeg",
@@ -177,13 +176,13 @@ const products = [
     description: "Calça de moletom estilo jogger/wide com bolsos cargo laterais e cordão de ajuste na cintura. Conforto e estilo casual."
   },
   {
-    id: "calca-cargo-olive-lowrise",
-    name: "Calça Cargo Olíva Low-Rise",
-    category: "calcas",
+    id: "blusa-manga-longa-olive-aesthetic",
+    name: "Blusa Manga Longa Olive Aesthetic",
+    category: "blusas",
     price: 257.00,
     badge: "30% OFF",
     image: "imagens/roupa19.jpeg",
-    description: "Calça utilitária em tom verde-oliva com cintura baixa, bolsos laterais funcionais e caimento reto descontraído."
+    description: "Blusa ajustada de mangas longas em tom verde-oliva com caimento confortável e visual versátil para sobreposições."
   },
 
   /* ------------------- LOTE 3 (roupa20 a roupa29) ------------------- */
@@ -300,7 +299,7 @@ const products = [
   {
     id: "bata-peplum-white-vintage",
     name: "Bata Peplum Algodão Bordado White",
-    category: "blusas",
+    category: "conjuntos",
     price: 185.57,
     badge: "30% OFF",
     image: "imagens/roupa32.jpeg",
@@ -309,7 +308,7 @@ const products = [
   {
     id: "regata-corset-lace-black",
     name: "Regata Bustiê Renda Black Gothic",
-    category: "blusas",
+    category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
     image: "imagens/roupa33.jpeg",
@@ -318,7 +317,7 @@ const products = [
   {
     id: "jaqueta-couro-vintage-distressed",
     name: "Jaqueta Couro Biker Distressed",
-    category: "jaquetas",
+    category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
     image: "imagens/roupa34.jpeg",
@@ -326,17 +325,17 @@ const products = [
   },
   {
     id: "jaqueta-couro-marmorizada-brown",
-    name: "Jaqueta Biker Couro Marmorizado",
-    category: "jaquetas",
+    name: "Conjunto Asymmetric Skull & Short Jeans Set",
+    category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
     image: "imagens/roupa35.jpeg",
-    description: "Jaqueta estruturada em tom marrom/preto desgastado com costuras reforçadas e zíper transversal."
+    description: "Conjunto estilo grunge/gótico composto por blusa preta de manga longa com ombro caído e estampa de caveira, short jeans cinza e acessórios marcantes."
   },
   {
     id: "camisa-pinstripe-short-sleeve",
     name: "Camisa Risca de Giz Manga Curta",
-    category: "blusas",
+    category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
     image: "imagens/roupa36.jpeg",
@@ -345,7 +344,7 @@ const products = [
   {
     id: "camisa-poplin-white-ruched",
     name: "Camisa Poplin Drapeada White",
-    category: "blusas",
+    category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
     image: "imagens/roupa37.jpeg",
@@ -354,7 +353,7 @@ const products = [
   {
     id: "top-cowl-neck-burgundy",
     name: "Top Drapeado Burgundy Cowl Neck",
-    category: "blusas",
+    category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
     image: "imagens/roupa38.jpeg",
@@ -363,7 +362,7 @@ const products = [
   {
     id: "camisa-pinstripe-navy-fitted",
     name: "Camisa Risca de Giz Navy Fitted",
-    category: "blusas",
+    category: "conjuntos",
     price: 199.86,
     badge: "30% OFF",
     image: "imagens/roupa39.jpeg",
@@ -382,35 +381,35 @@ const products = [
   },
   {
     id: "tshirt-stars-leopard-skirt-set",
-    name: "Camiseta Star Aesthetic Asymmetric",
-    category: "blusas",
+    name: "Conjunto Star Aesthetic & Saia Animal Print",
+    category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa41.jpg",
-    description: "Camiseta preta de ombro caído com estampas de estrelas desgastadas e estilo assimétrico streetwear."
+    image: "imagens/roupa41.jpeg",
+    description: "Camiseta preta de ombro caído com estampa de estrelas em patchwork e escritas estilo Y2K, combinada com minisaia jeans em padronagem de leopardo."
   },
   {
     id: "top-goth-offshoulder-denim-skirt",
-    name: "Top Off-Shoulder Gothic Urban",
+    name: "Top Off-Shoulder Gothic Graphic Print",
     category: "blusas",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa42.jpg",
-    description: "Blusa preta de ombro caído com estampa gótica urbana frontal e caimento despojado."
+    image: "imagens/roupa42.jpeg",
+    description: "Blusa preta acinturada de ombro caído com estampa gráfica de paisagem urbana e tipografias góticas, perfeita para composições Y2K e alt-fashion."
   },
   {
     id: "top-goth-offshoulder-skirt-set",
-    name: "Saia Jeans Estonada com Tachas",
-    category: "calcas",
+    name: "Conjunto Suéter Estrelas & Saia Renda",
+    category: "conjuntos",
     price: 214.14,
     badge: "30% OFF",
-    image: "imagens/roupa43.jpg",
-    description: "Minisaia jeans cinza estonada com detalhes de tachas metálicas nos bolsos e abotoamento duplo no cós."
+    image: "imagens/roupa43.jpeg",
+    description: "Look completo estilo Harajuku/Y2K com suéter preto oversized estampado de estrelas brancas, saia de babados em renda, polainas brancas e acessórios goth."
   },
   {
     id: "frente-unica-burgundy-boho",
     name: "Frente Única Lace & Ring Burgundy",
-    category: "blusas",
+    category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
     image: "imagens/roupa44.jpeg",
@@ -419,7 +418,7 @@ const products = [
   {
     id: "top-burgundy-lace-biker-set",
     name: "Top Bustiê Bordo com Renda",
-    category: "blusas",
+    category: "conjuntos",
     price: 142.71,
     badge: "30% OFF",
     image: "imagens/roupa45.jpeg",
@@ -428,7 +427,7 @@ const products = [
   {
     id: "regata-ribbed-red-cargo-set",
     name: "Regata Canelada Red Classic",
-    category: "blusas",
+    category: "conjuntos",
     price: 114.14,
     badge: "30% OFF",
     image: "imagens/roupa46.jpeg",
@@ -436,17 +435,17 @@ const products = [
   },
   {
     id: "look-urban-goth-white-shirt",
-    name: "Calça Wide Leg Black Stonewash",
-    category: "calcas",
+    name: "Conjunto Urban Goth com Camisa Branca",
+    category: "conjuntos",
     price: 299.86,
     badge: "30% OFF",
     image: "imagens/roupa47.jpeg",
-    description: "Calça jeans ampla com lavagem estonada escura efeito envelhecido e cintura ajustada de alta atitude."
+    description: "Look completo de estilo urbano gótico composto por calça wide leg com lavagem escura estonada e sobreposição marcante."
   },
   {
     id: "top-plum-lace-flared-jeans",
     name: "Top Bustiê Plum Gothic Lace",
-    category: "blusas",
+    category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
     image: "imagens/roupa48.jpeg",
@@ -455,7 +454,7 @@ const products = [
   {
     id: "sueter-vneck-charcoal-knit",
     name: "Suéter Tricot Decote V Charcoal",
-    category: "blusas",
+    category: "conjuntos",
     price: 242.71,
     badge: "30% OFF",
     image: "imagens/roupa49.jpeg",
@@ -465,17 +464,17 @@ const products = [
   /* ------------------- LOTE 6 (roupa50 a roupa59) ------------------- */
   {
     id: "sueter-vneck-charcoal-bootcut-set",
-    name: "Suéter Knit V-Neck Charcoal Grey",
+    name: "Blusa Off-Shoulder Burning Soul Cross",
     category: "blusas",
     price: 235.57,
     badge: "30% OFF",
     image: "imagens/roupa50.jpeg",
-    description: "Suéter canelado justo em tom cinza-carvão com decote V profundo alongado e mangas com punhos extra longos."
+    description: "Blusa preta de ombro caído com estampa frontal 'Burning Soul' de cruz com caveira e coroa, detalhes de alças duplas e barra acinturada."
   },
   {
     id: "top-double-layer-red-black-y2k",
     name: "Blusa Sobreposta Layered Red & Black",
-    category: "blusas",
+    category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
     image: "imagens/roupa51.jpeg",
@@ -529,7 +528,7 @@ const products = [
   {
     id: "blusa-manga-longa-henley-burgundy-lace",
     name: "Blusa Henley Burgundy com Renda",
-    category: "blusas",
+    category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
     image: "imagens/roupa57.jpeg",
@@ -538,7 +537,7 @@ const products = [
   {
     id: "cardigan-oversized-brown-corset-set",
     name: "Cardigan Wool Oversized Espresso Brown",
-    category: "jaquetas",
+    category: "conjuntos",
     price: 327.00,
     badge: "30% OFF",
     image: "imagens/roupa58.jpeg",
@@ -547,7 +546,7 @@ const products = [
   {
     id: "regata-rhinestone-bebe-y2k-black",
     name: "Regata Rhinestone Glam Y2K Black",
-    category: "blusas",
+    category: "conjuntos",
     price: 135.57,
     badge: "30% OFF",
     image: "imagens/roupa59.jpeg",
@@ -594,7 +593,7 @@ const products = [
   {
     id: "look-complete-goth-plum-bootcut",
     name: "Top Bustiê Plum Gothic Velvet",
-    category: "blusas",
+    category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
     image: "imagens/roupa64.jpeg",
@@ -668,7 +667,7 @@ const products = [
   {
     id: "regata-corset-bustier-black-lace-y2k",
     name: "Regata Bustiê Black Lace Bow",
-    category: "blusas",
+    category: "conjuntos",
     price: 149.86,
     badge: "30% OFF",
     image: "imagens/roupa72.jpeg",
@@ -677,7 +676,7 @@ const products = [
   {
     id: "top-henley-longsleeve-burgundy-ribbed",
     name: "Blusa Henley Ribbed Wine Red",
-    category: "blusas",
+    category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
     image: "imagens/roupa73.jpeg",
@@ -686,7 +685,7 @@ const products = [
   {
     id: "jaqueta-windbreaker-oversized-black",
     name: "Jaqueta Windbreaker Cropped Black",
-    category: "jaquetas",
+    category: "conjuntos",
     price: 299.86,
     badge: "30% OFF",
     image: "imagens/roupa74.jpeg",
@@ -695,7 +694,7 @@ const products = [
   {
     id: "top-henley-longsleeve-heather-grey",
     name: "Blusa Henley Fitted Heather Grey",
-    category: "blusas",
+    category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
     image: "imagens/roupa75.jpeg",
@@ -713,7 +712,7 @@ const products = [
   {
     id: "top-striped-vneck-maroon-longsleeve",
     name: "Blusa Listrada V-Neck Maroon",
-    category: "blusas",
+    category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
     image: "imagens/roupa77.jpeg",
@@ -731,14 +730,14 @@ const products = [
   {
     id: "sueter-drapeado-knit-black-coquette",
     name: "Suéter Drapeado Off-Shoulder Black",
-    category: "blusas",
+    category: "acessorios",
     price: 249.86,
     badge: "30% OFF",
     image: "imagens/roupa79.jpeg",
     description: "Suéter acinturado em tricot preto macio com decote ombro a ombro drapeado e mangas compridas de caimento fluido."
   },
 
-  /* ------------------- LOTE 9 (roupa80 a roupa89) ------------------- */
+  /* ------------------- LOTE 9 (roupa80 a roupa90) ------------------- */
   {
     id: "kit-acessorios-golden-seashell-pearls",
     name: "Kit Acessórios Golden Seashell & Pearls",
@@ -828,6 +827,15 @@ const products = [
     badge: "30% OFF",
     image: "imagens/roupa89.jpeg",
     description: "Set elegante contendo piranha metálica dourada floral, pulseira delicada com pingentes de trevo de quatro folhas e anéis minimalistas."
+  },
+  {
+    id: "peca-roupa-90",
+    name: "Peça Roupa 90",
+    category: "calcas",
+    price: 128.43,
+    badge: "30% OFF",
+    image: "imagens/roupa90.jpeg",
+    description: "Descrição da peça 90 adicionada ao catálogo."
   }
 ];
 
@@ -843,9 +851,6 @@ const formatPrice = value =>
     currency: "BRL"
   }).format(value);
 
-/* 
-  Carrega as imagens locais de forma limpa e direta
-*/
 const imageUrl = (product) => {
   if (!product || !product.image) return '';
   return product.image;
@@ -854,7 +859,6 @@ const imageUrl = (product) => {
 const storageKey = "novotec-cart";
 let cart = [];
 
-// Carregar carrinho salvo no LocalStorage
 try {
   const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
@@ -874,9 +878,7 @@ try {
 function saveCart() {
   try {
     localStorage.setItem(storageKey, JSON.stringify(cart));
-  } catch {
-    // Continua a funcionar caso o armazenamento esteja bloqueado
-  }
+  } catch {}
 
   renderCart();
 }
@@ -1088,8 +1090,8 @@ if (queryId) {
   } else {
     document.title = `${selectedProduct.name} | NovoTec Atelier`;
 
-    const sizes = selectedProduct.category === "acessorios"
-      ? ["U"]
+    const sizes = (selectedProduct.category === "acessorios" || selectedProduct.category === "conjuntos")
+      ? ["U", "P", "M", "G"]
       : ["P", "M", "G"];
 
     const discountedPrice = selectedProduct.price * 0.70;
@@ -1112,7 +1114,7 @@ if (queryId) {
             <div class="size-label">ESCOLHA O TAMANHO</div>
             <div class="size-options">
               ${sizes.map(size => `
-                <button class="size-button ${size === (sizes.length === 1 ? "U" : "M") ? "selected" : ""}"
+                <button class="size-button ${size === "M" ? "selected" : ""}"
                         type="button" data-size="${size}">${size}</button>
               `).join("")}
             </div>
