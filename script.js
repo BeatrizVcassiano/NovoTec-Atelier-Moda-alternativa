@@ -2,13 +2,63 @@
 =============================================================================
   NOVOTEC ATELIER — CATÁLOGO DE PRODUTOS E LÓGICA DA LOJA
 =============================================================================
-  CONTEÚDO COMPLETO E OTIMIZADO:
-  - Lote 1 ao Lote 9 (roupa1 até roupa90)
-  - Categorias e descrições devidamente ajustadas
-  - Suporte a Lazy Loading (`loading="lazy"`) em todas as imagens
-=============================================================================
 */
 
+document.addEventListener('DOMContentLoaded', () => {
+    const botaoCheckout = document.getElementById('checkout-button');
+
+    if (botaoCheckout) {
+        botaoCheckout.addEventListener('click', () => {
+            // 1. Captura o elemento que contém o valor total no seu HTML
+            const elementoTotal = document.getElementById('cart-total');
+            if (!elementoTotal) {
+                alert('Erro ao localizar o valor total do carrinho.');
+                return;
+            }
+
+            // 2. Extrai e limpa o texto para obter apenas o número (ex: "R$ 271,28" vira 271.28)
+            let textoValor = elementoTotal.textContent || "0";
+            let valorLimpo = textoValor.replace('R$', '').replace(/\s/g, '').replace('.', '').replace(',', '.');
+            let valorTotal = parseFloat(valorLimpo);
+
+            if (isNaN(valorTotal) || valorTotal <= 0) {
+                alert('Seu carrinho está vazio ou o valor é inválido.');
+                return;
+            }
+
+            // 3. Envia o valor via requisição POST para a API Flask
+            fetch('/api/finalizar-compra', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ valor_total: valorTotal })
+            })
+            .then(resposta => {
+                if (!resposta.ok) {
+                    throw new Error('Falha na comunicação com o servidor.');
+                }
+                return resposta.json(); // <-- CORRIGIDO: de get_json() para json()
+            })
+            .then(dados => {
+                if (dados.sucesso) {
+                    alert(dados.mensagem);
+                } else {
+                    alert('Erro ao finalizar: ' + dados.mensagem);
+                }
+            })
+            .catch(erro => {
+                console.error('Erro na requisição:', erro);
+                alert('Ocorreu um erro ao conectar com o servidor. Verifique se o Flask está rodando.');
+            });
+        });
+    }
+
+    // Inicializa a exibição dos produtos na tela caso o grid exista
+    renderizarProdutos();
+});
+
+// Catálogo de Produtos
 const products = [
   /* ------------------- LOTE 1 (roupa1 a roupa10) ------------------- */
   {
@@ -17,7 +67,7 @@ const products = [
     category: "calcas",
     price: 271.28,
     badge: "30% OFF",
-    image: "imagens/roupa1.png",
+    image: "static/imagens/roupa1.png",
     description: "Modelagem ampla e lavagem vintage com efeito estonado. Perfeita para composições streetwear marcantes e confortáveis."
   },
   {
@@ -26,7 +76,7 @@ const products = [
     category: "calcas",
     price: 285.57,
     badge: "30% OFF",
-    image: "imagens/roupa2.png",
+    image: "static/imagens/roupa2.png",
     description: "Corte wide leg com detalhe de argola metálica e lavagem escura marmorizada. Expressão e atitude para o dia a dia."
   },
   {
@@ -35,7 +85,7 @@ const products = [
     category: "calcas",
     price: 242.71,
     badge: "30% OFF",
-    image: "imagens/roupa3.png",
+    image: "static/imagens/roupa3.png",
     description: "Estilo parachute com recortes laterais contrastantes e ajuste na cintura. Leve, funcional e com forte presença urbana."
   },
   {
@@ -44,7 +94,7 @@ const products = [
     category: "calcas",
     price: 257.00,
     badge: "30% OFF",
-    image: "imagens/roupa4.png",
+    image: "static/imagens/roupa4.png",
     description: "Cintura baixa e caimento flare em tom cinza estonado. Inspirada na estética dos anos 2000 para looks autênticos."
   },
   {
@@ -53,7 +103,7 @@ const products = [
     category: "blusas",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa5.png",
+    image: "static/imagens/roupa5.png",
     description: "Modelagem ajustada com decote profundo e estampa estilo gótico/y2k. Tecido confortável e caimento impecável."
   },
   {
@@ -62,7 +112,7 @@ const products = [
     category: "blusas",
     price: 185.57,
     badge: "30% OFF",
-    image: "imagens/roupa6.png",
+    image: "static/imagens/roupa6.png",
     description: "Camiseta com caimento oversized, tom verde militar estonado e estampa gráfica de caveira estilo grunge."
   },
   {
@@ -71,7 +121,7 @@ const products = [
     category: "blusas",
     price: 178.43,
     badge: "30% OFF",
-    image: "imagens/roupa7.png",
+    image: "static/imagens/roupa7.png",
     description: "Camiseta preta de algodão com estampa gráfica prateada e caimento relaxado para compor sobreposições urbanas."
   },
   {
@@ -80,7 +130,7 @@ const products = [
     category: "blusas",
     price: 192.71,
     badge: "30% OFF",
-    image: "imagens/roupa8.png",
+    image: "static/imagens/roupa8.png",
     description: "Peça na cor cinza-claro com detalhes de estampas de cruzes e asas nas mangas e decote V. Puro estilo Y2K."
   },
   {
@@ -89,7 +139,7 @@ const products = [
     category: "acessorios",
     price: 114.14,
     badge: "30% OFF",
-    image: "imagens/roupa9.png",
+    image: "static/imagens/roupa9.png",
     description: "Cinto em material sintético preto com aplicação de tachas piramidais metálicas e fivela reforçada."
   },
   {
@@ -98,10 +148,9 @@ const products = [
     category: "acessorios",
     price: 128.43,
     badge: "30% OFF",
-    image: "imagens/roupa10.png",
+    image: "static/imagens/roupa10.png",
     description: "Cinto repleto de tachas prateadas com fivela imponente em formato de caveira cravada com pedras brilhantes."
   },
-
   /* ------------------- LOTE 2 (roupa11 a roupa19) ------------------- */
   {
     id: "vestido-gothic-velvet-lace",
@@ -109,7 +158,7 @@ const products = [
     category: "vestidos",
     price: 385.57,
     badge: "30% OFF",
-    image: "imagens/roupa11.png",
+    image: "static/imagens/roupa11.png",
     description: "Vestido longo em veludo molhado com corpete estruturado vermelho e preto, mangas de renda trabalhada e fenda elegante."
   },
   {
@@ -118,7 +167,7 @@ const products = [
     category: "vestidos",
     price: 357.00,
     badge: "30% OFF",
-    image: "imagens/roupa12.png",
+    image: "static/imagens/roupa12.png",
     description: "Silhueta ajustada em veludo preto, gola alta estilizada com recorte no colo e rendas florais abertas nas mangas."
   },
   {
@@ -127,7 +176,7 @@ const products = [
     category: "calcas",
     price: 271.28,
     badge: "30% OFF",
-    image: "imagens/roupa13.jpeg",
+    image: "static/imagens/roupa13.jpeg",
     description: "Corte bootcut/flare de cintura baixa com lavagem azul amarelada estonada e costuras brancas em destaque."
   },
   {
@@ -136,7 +185,7 @@ const products = [
     category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
-    image: "imagens/roupa14.jpeg",
+    image: "static/imagens/roupa14.jpeg",
     description: "Conjunto dramático composto por corset tomara-que-caia estruturado com amarrações e saia volumosa assimétrica em tule preto."
   },
   {
@@ -145,7 +194,7 @@ const products = [
     category: "conjuntos",
     price: 314.14,
     badge: "30% OFF",
-    image: "imagens/roupa15.jpeg",
+    image: "static/imagens/roupa15.jpeg",
     description: "Look Y2K completo composto por calça jeans boca de sino com tiras e fivelas nas coxas, blusa preta de ombro caído, mala e tamancos de plataforma."
   },
   {
@@ -154,7 +203,7 @@ const products = [
     category: "blusas",
     price: 285.57,
     badge: "30% OFF",
-    image: "imagens/roupa16.jpeg",
+    image: "static/imagens/roupa16.jpeg",
     description: "Moletom cinza estonado com zíper frontal, bolso canguru e bordado estilizado no peito. Caimento urbano confortável."
   },
   {
@@ -163,7 +212,7 @@ const products = [
     category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
-    image: "imagens/roupa17.jpeg",
+    image: "static/imagens/roupa17.jpeg",
     description: "Blusa justa preta de mangas longas com decote assimétrico ombro a ombro e efeito drapeado na lateral."
   },
   {
@@ -172,7 +221,7 @@ const products = [
     category: "calcas",
     price: 228.43,
     badge: "30% OFF",
-    image: "imagens/roupa18.jpeg",
+    image: "static/imagens/roupa18.jpeg",
     description: "Calça de moletom estilo jogger/wide com bolsos cargo laterais e cordão de ajuste na cintura. Conforto e estilo casual."
   },
   {
@@ -181,18 +230,17 @@ const products = [
     category: "blusas",
     price: 257.00,
     badge: "30% OFF",
-    image: "imagens/roupa19.jpeg",
+    image: "static/imagens/roupa19.jpeg",
     description: "Blusa ajustada de mangas longas em tom verde-oliva com caimento confortável e visual versátil para sobreposições."
   },
-
-  /* ------------------- LOTE 3 (roupa20 a roupa29) ------------------- */
+  /* ------------------- LOTE 3 (roupa20 a roupa24) ------------------- */
   {
     id: "blusa-henley-verde-militar",
     name: "Blusa Henley Ribbed Olive",
     category: "blusas",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa20.jpeg",
+    image: "static/imagens/roupa20.jpeg",
     description: "Blusa canelada de mangas longas em tom verde-militar com abotoamento frontal em estilo henley acinturado."
   },
   {
@@ -201,7 +249,7 @@ const products = [
     category: "blusas",
     price: 185.57,
     badge: "30% OFF",
-    image: "imagens/roupa21.jpeg",
+    image: "static/imagens/roupa21.jpeg",
     description: "Blusa preta ajustada com botões frontais e detalhe delicado de renda floral nos punhos das mangas."
   },
   {
@@ -210,7 +258,7 @@ const products = [
     category: "blusas",
     price: 271.28,
     badge: "30% OFF",
-    image: "imagens/roupa22.jpeg",
+    image: "static/imagens/roupa22.jpeg",
     description: "Suéter aconchegante de tricot bege com decote V profundo, tramas aparentes e modelagem solta."
   },
   {
@@ -219,7 +267,7 @@ const products = [
     category: "blusas",
     price: 149.86,
     badge: "30% OFF",
-    image: "imagens/roupa23.jpeg",
+    image: "static/imagens/roupa23.jpeg",
     description: "Blusa preta básica com caimento descolado, decote ombro a ombro sutil e tecido leve para sobreposições."
   },
   {
@@ -228,7 +276,7 @@ const products = [
     category: "jaquetas",
     price: 314.14,
     badge: "30% OFF",
-    image: "imagens/roupa24.jpeg",
+    image: "static/imagens/roupa24.jpeg",
     description: "Jaqueta de moletom com zíper e capuz em tom oliva estonado com estampas nas mangas e caimento relaxed."
   },
   {
@@ -237,7 +285,7 @@ const products = [
     category: "blusas",
     price: 128.43,
     badge: "30% OFF",
-    image: "imagens/roupa25.jpeg",
+    image: "static/imagens/roupa25.jpeg",
     description: "Top cropped de alcinha canelado com acabamento delicado em renda no decote. Um clássico da estética vintage."
   },
   {
@@ -246,7 +294,7 @@ const products = [
     category: "calcas",
     price: 278.43,
     badge: "30% OFF",
-    image: "imagens/roupa26.jpeg",
+    image: "static/imagens/roupa26.jpeg",
     description: "Jeans escuro de cintura alta com cós duplo decorativo e caimento amplo estilo wide leg de alta presença."
   },
   {
@@ -255,7 +303,7 @@ const products = [
     category: "vestidos",
     price: 399.86,
     badge: "30% OFF",
-    image: "imagens/roupa27.jpeg",
+    image: "static/imagens/roupa27.jpeg",
     description: "Vestido midi preto em cetim encorpado, decote coração estruturado com alças largas e saia armada de estilo vintage 50s."
   },
   {
@@ -264,7 +312,7 @@ const products = [
     category: "vestidos",
     price: 471.28,
     badge: "30% OFF",
-    image: "imagens/roupa28.jpeg",
+    image: "static/imagens/roupa28.jpeg",
     description: "Vestido longo fluido em cetim pérola/champagne, decote quadrado com mangas curtas bufantes e plissado lateral elegante."
   },
   {
@@ -273,7 +321,7 @@ const products = [
     category: "vestidos",
     price: 428.43,
     badge: "30% OFF",
-    image: "imagens/roupa29.jpeg",
+    image: "static/imagens/roupa29.jpeg",
     description: "Vestido longo preto ajustado ao corpo com detalhes em chiffon e rendas curtas nos ombros. Sofisticação e mistério."
   },
 
@@ -284,7 +332,7 @@ const products = [
     category: "blusas",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa30.jpeg",
+    image: "static/imagens/roupa30.jpeg",
     description: "Top em chiffon roxo transparente com estampa floral, pedraria central no busto e barra assimétrica pontuda em vibe Y2K."
   },
   {
@@ -293,7 +341,7 @@ const products = [
     category: "blusas",
     price: 199.86,
     badge: "30% OFF",
-    image: "imagens/roupa31.jpeg",
+    image: "static/imagens/roupa31.jpeg",
     description: "Regata azul-piscina ajustada com bordados delicados em paetês florais e alcinhas finas, estilo sereia vintage."
   },
   {
@@ -302,7 +350,7 @@ const products = [
     category: "conjuntos",
     price: 185.57,
     badge: "30% OFF",
-    image: "imagens/roupa32.jpeg",
+    image: "static/imagens/roupa32.jpeg",
     description: "Bata branca em algodão leve com detalhes bordados no peito, acabamento rendado e caimento peplum fluido."
   },
   {
@@ -311,7 +359,7 @@ const products = [
     category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa33.jpeg",
+    image: "static/imagens/roupa33.jpeg",
     description: "Top em renda preta trabalhada com modelagem bustiê, alcinhas ajustáveis e laço delicado no decote."
   },
   {
@@ -320,7 +368,7 @@ const products = [
     category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
-    image: "imagens/roupa34.jpeg",
+    image: "static/imagens/roupa34.jpeg",
     description: "Jaqueta estilo biker em material sintético com lavagem desgastada/marmorizada e zíperes metálicos utilitários."
   },
   {
@@ -329,7 +377,7 @@ const products = [
     category: "conjuntos",
     price: 414.14,
     badge: "30% OFF",
-    image: "imagens/roupa35.jpeg",
+    image: "static/imagens/roupa35.jpeg",
     description: "Conjunto estilo grunge/gótico composto por blusa preta de manga longa com ombro caído e estampa de caveira, short jeans cinza e acessórios marcantes."
   },
   {
@@ -338,7 +386,7 @@ const products = [
     category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa36.jpeg",
+    image: "static/imagens/roupa36.jpeg",
     description: "Camisa acinturada branca com finas listras risca de giz escuras, mangas curtas e gola tradicional de alfaiataria."
   },
   {
@@ -347,7 +395,7 @@ const products = [
     category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
-    image: "imagens/roupa37.jpeg",
+    image: "static/imagens/roupa37.jpeg",
     description: "Camisa ajustada branca de mangas curtas com franzido estruturado abaixo do busto e decote acentuado."
   },
   {
@@ -356,7 +404,7 @@ const products = [
     category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
-    image: "imagens/roupa38.jpeg",
+    image: "static/imagens/roupa38.jpeg",
     description: "Top sem mangas na cor vinho/bordeaux com decote drapeado fluído estilo degagê, trazendo elegância e sensualidade."
   },
   {
@@ -365,7 +413,7 @@ const products = [
     category: "conjuntos",
     price: 199.86,
     badge: "30% OFF",
-    image: "imagens/roupa39.jpeg",
+    image: "static/imagens/roupa39.jpeg",
     description: "Camisa de mangas compridas acinturada em azul-marinho com risca de giz branca e punhos dobrados estendidos."
   },
 
@@ -376,7 +424,7 @@ const products = [
     category: "calcas",
     price: 264.14,
     badge: "30% OFF",
-    image: "imagens/roupa40.jpeg",
+    image: "static/imagens/roupa40.jpeg",
     description: "Jeans de cintura média-baixa com lavagem estonada nos bolsos traseiros e barra flare clássica dos anos 2000."
   },
   {
@@ -385,7 +433,7 @@ const products = [
     category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa41.jpeg",
+    image: "static/imagens/roupa41.jpeg",
     description: "Camiseta preta de ombro caído com estampa de estrelas em patchwork e escritas estilo Y2K, combinada com minisaia jeans em padronagem de leopardo."
   },
   {
@@ -394,7 +442,7 @@ const products = [
     category: "blusas",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa42.jpeg",
+    image: "static/imagens/roupa42.jpeg",
     description: "Blusa preta acinturada de ombro caído com estampa gráfica de paisagem urbana e tipografias góticas, perfeita para composições Y2K e alt-fashion."
   },
   {
@@ -403,7 +451,7 @@ const products = [
     category: "conjuntos",
     price: 214.14,
     badge: "30% OFF",
-    image: "imagens/roupa43.jpeg",
+    image: "static/imagens/roupa43.jpeg",
     description: "Look completo estilo Harajuku/Y2K com suéter preto oversized estampado de estrelas brancas, saia de babados em renda, polainas brancas e acessórios goth."
   },
   {
@@ -412,7 +460,7 @@ const products = [
     category: "conjuntos",
     price: 157.00,
     badge: "30% OFF",
-    image: "imagens/roupa44.jpeg",
+    image: "static/imagens/roupa44.jpeg",
     description: "Top frente única tom vinho/bordeaux com argola metálica no busto, tecido rendado trabalhado e alças para amarração."
   },
   {
@@ -421,7 +469,7 @@ const products = [
     category: "conjuntos",
     price: 142.71,
     badge: "30% OFF",
-    image: "imagens/roupa45.jpeg",
+    image: "static/imagens/roupa45.jpeg",
     description: "Top ajustado tom bordô acinturado com acabamento rendado no decote e mangas curtas abertas."
   },
   {
@@ -430,7 +478,7 @@ const products = [
     category: "conjuntos",
     price: 114.14,
     badge: "30% OFF",
-    image: "imagens/roupa46.jpeg",
+    image: "static/imagens/roupa46.jpeg",
     description: "Regata básica canelada em tom vermelho-fechado com alças médias e caimento justo perfeito."
   },
   {
@@ -439,7 +487,7 @@ const products = [
     category: "conjuntos",
     price: 299.86,
     badge: "30% OFF",
-    image: "imagens/roupa47.jpeg",
+    image: "static/imagens/roupa47.jpeg",
     description: "Look completo de estilo urbano gótico composto por calça wide leg com lavagem escura estonada e sobreposição marcante."
   },
   {
@@ -448,7 +496,7 @@ const products = [
     category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa48.jpeg",
+    image: "static/imagens/roupa48.jpeg",
     description: "Blusa acinturada tom ameixa escuro com decote coração bordado em renda preta e mangas curtas estruturadas."
   },
   {
@@ -457,7 +505,7 @@ const products = [
     category: "conjuntos",
     price: 242.71,
     badge: "30% OFF",
-    image: "imagens/roupa49.jpeg",
+    image: "static/imagens/roupa49.jpeg",
     description: "Blusa de tricot leve tom cinza-grafite com decote V alongado e tramas caneladas clássicas."
   },
 
@@ -468,7 +516,7 @@ const products = [
     category: "blusas",
     price: 235.57,
     badge: "30% OFF",
-    image: "imagens/roupa50.jpeg",
+    image: "static/imagens/roupa50.jpeg",
     description: "Blusa preta de ombro caído com estampa frontal 'Burning Soul' de cruz com caveira e coroa, detalhes de alças duplas e barra acinturada."
   },
   {
@@ -477,7 +525,7 @@ const products = [
     category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa51.jpeg",
+    image: "static/imagens/roupa51.jpeg",
     description: "Top com efeito de dupla camada trazendo blusa preta de mangas curtas e decote V sobreposta a uma regata vermelha."
   },
   {
@@ -486,7 +534,7 @@ const products = [
     category: "vestidos",
     price: 271.28,
     badge: "30% OFF",
-    image: "imagens/roupa52.jpeg",
+    image: "static/imagens/roupa52.jpeg",
     description: "Vestido curto preto de decote frente única acentuado, cintura drapeada e saia rodada em babados fluídos."
   },
   {
@@ -495,7 +543,7 @@ const products = [
     category: "vestidos",
     price: 457.00,
     badge: "30% OFF",
-    image: "imagens/roupa53.jpeg",
+    image: "static/imagens/roupa53.jpeg",
     description: "Vestido longo fluido na cor branca com decote quadrado, alças médias e saia em camadas assimétricas de chiffon."
   },
   {
@@ -504,7 +552,7 @@ const products = [
     category: "blusas",
     price: 121.28,
     badge: "30% OFF",
-    image: "imagens/roupa54.jpeg",
+    image: "static/imagens/roupa54.jpeg",
     description: "Regata branca de alcinhas delicadas com acabamento em renda floral no decote e na barra, perfeita para compor o estilo Y2K/Coquette."
   },
   {
@@ -513,7 +561,7 @@ const products = [
     category: "blusas",
     price: 185.57,
     badge: "30% OFF",
-    image: "imagens/roupa55.jpeg",
+    image: "static/imagens/roupa55.jpeg",
     description: "Blusa de mangas longas canelada com padronagem de listras em tom marrom e bege, apresentando detalhe interno de renda branca no decote."
   },
   {
@@ -522,7 +570,7 @@ const products = [
     category: "jaquetas",
     price: 285.57,
     badge: "30% OFF",
-    image: "imagens/roupa56.jpeg",
+    image: "static/imagens/roupa56.jpeg",
     description: "Casaco de moletom cinza-mescla acinturado com zíper duplo frontal, capuz amplo e ajustado ao corpo."
   },
   {
@@ -531,7 +579,7 @@ const products = [
     category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
-    image: "imagens/roupa57.jpeg",
+    image: "static/imagens/roupa57.jpeg",
     description: "Blusa acinturada em tom vinho com abotoamento henley frontal e aplicação delicada de renda branca no decote arredondado."
   },
   {
@@ -540,7 +588,7 @@ const products = [
     category: "conjuntos",
     price: 327.00,
     badge: "30% OFF",
-    image: "imagens/roupa58.jpeg",
+    image: "static/imagens/roupa58.jpeg",
     description: "Cardigan de tricot encorpado em tom marrom-café com abotoamento frontal, caimento solto e estilo retrô acolhedor."
   },
   {
@@ -549,7 +597,7 @@ const products = [
     category: "conjuntos",
     price: 135.57,
     badge: "30% OFF",
-    image: "imagens/roupa59.jpeg",
+    image: "static/imagens/roupa59.jpeg",
     description: "Regata preta estilo cavada com aplicação de strass brilhantes no peito, remetendo ao estilo clássico glam das baladas dos anos 2000."
   },
 
@@ -560,7 +608,7 @@ const products = [
     category: "jaquetas",
     price: 342.71,
     badge: "30% OFF",
-    image: "imagens/roupa60.jpeg",
+    image: "static/imagens/roupa60.jpeg",
     description: "Jaqueta de moletom cinza acinturada com interior do capuz peluciado em fleece, zíper duplo frontal e furos para os polegares nos punhos."
   },
   {
@@ -569,7 +617,7 @@ const products = [
     category: "blusas",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa61.jpeg",
+    image: "static/imagens/roupa61.jpeg",
     description: "Blusa canelada acinturada de mangas longas com abotoamento henley frontal e barra interna de renda delicada."
   },
   {
@@ -578,7 +626,7 @@ const products = [
     category: "blusas",
     price: 142.71,
     badge: "30% OFF",
-    image: "imagens/roupa62.jpeg",
+    image: "static/imagens/roupa62.jpeg",
     description: "Regata ajustada preta com decote em V bordado em renda, detalhe de lacinho central e corpo levemente drapeado."
   },
   {
@@ -587,7 +635,7 @@ const products = [
     category: "blusas",
     price: 185.57,
     badge: "30% OFF",
-    image: "imagens/roupa63.jpeg",
+    image: "static/imagens/roupa63.jpeg",
     description: "Camisa de mangas compridas em algodão preto com modelagem acinturada, abotoamento frontal e gola de estrutura clássica."
   },
   {
@@ -596,7 +644,7 @@ const products = [
     category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa64.jpeg",
+    image: "static/imagens/roupa64.jpeg",
     description: "Blusa tom ameixa escuro com modelagem bustiê acinturada, decote quadrado com viés rendado e alças estruturadas."
   },
   {
@@ -605,7 +653,7 @@ const products = [
     category: "blusas",
     price: 157.00,
     badge: "30% OFF",
-    image: "imagens/roupa65.jpeg",
+    image: "static/imagens/roupa65.jpeg",
     description: "Blusa preta de corte fluido com decote assimétrico ombro a ombro e alça fina única, ideal para composições com colares marcantes."
   },
   {
@@ -614,7 +662,7 @@ const products = [
     category: "calcas",
     price: 285.57,
     badge: "30% OFF",
-    image: "imagens/roupa66.jpeg",
+    image: "static/imagens/roupa66.jpeg",
     description: "Calça jeans de cintura baixa com lavagem azul marmorizada estonada, fivela integrada no cós e barra flare marcante estilo anos 2000."
   },
   {
@@ -623,7 +671,7 @@ const products = [
     category: "jaquetas",
     price: 399.86,
     badge: "30% OFF",
-    image: "imagens/roupa67.jpeg",
+    image: "static/imagens/roupa67.jpeg",
     description: "Jaqueta estilo biker curta em material sintético preto acinturada, com fechamento por zíper e gola alta com botão de pressão."
   },
   {
@@ -632,7 +680,7 @@ const products = [
     category: "jaquetas",
     price: 314.14,
     badge: "30% OFF",
-    image: "imagens/roupa68.jpeg",
+    image: "static/imagens/roupa68.jpeg",
     description: "Jaqueta de malha térmica waffle preta com capuz, zíper frontal e estampas e bordados temáticos no peito."
   },
   {
@@ -641,7 +689,7 @@ const products = [
     category: "blusas",
     price: 257.00,
     badge: "30% OFF",
-    image: "imagens/roupa69.jpeg",
+    image: "static/imagens/roupa69.jpeg",
     description: "Suéter em tricot macio tom cinza-mescla com decote V amplo que permite usá-lo de ombro caído sobreposto a regatas e tops."
   },
 
@@ -652,7 +700,7 @@ const products = [
     category: "jaquetas",
     price: 428.43,
     badge: "30% OFF",
-    image: "imagens/roupa70.jpeg",
+    image: "static/imagens/roupa70.jpeg",
     description: "Jaqueta em couro sintético com acabamento estonado e textura envelhecida em tom oliva/cinza, zíper frontal e estilo rocker imponente."
   },
   {
@@ -661,7 +709,7 @@ const products = [
     category: "blusas",
     price: 199.86,
     badge: "30% OFF",
-    image: "imagens/roupa71.jpeg",
+    image: "static/imagens/roupa71.jpeg",
     description: "Colete de alfaiataria acinturado com abotoamento frontal e padronagem risca de giz, ideal para sobreposições com camisas e camisetas."
   },
   {
@@ -670,7 +718,7 @@ const products = [
     category: "conjuntos",
     price: 149.86,
     badge: "30% OFF",
-    image: "imagens/roupa72.jpeg",
+    image: "static/imagens/roupa72.jpeg",
     description: "Top bustiê justo em malha preta com taças estruturadas e aplicação de renda trabalhada com laço delicado no decote."
   },
   {
@@ -679,7 +727,7 @@ const products = [
     category: "conjuntos",
     price: 171.28,
     badge: "30% OFF",
-    image: "imagens/roupa73.jpeg",
+    image: "static/imagens/roupa73.jpeg",
     description: "Blusa acinturada em tom vinho/bordeaux de mangas longas com gola henley de abotoamento delicado e malha canelada."
   },
   {
@@ -688,7 +736,7 @@ const products = [
     category: "conjuntos",
     price: 299.86,
     badge: "30% OFF",
-    image: "imagens/roupa74.jpeg",
+    image: "static/imagens/roupa74.jpeg",
     description: "Jaqueta corta-vento oversized curta em tecido leve preto com zíper frontal, punhos elásticos e visual streetwear despojado."
   },
   {
@@ -697,7 +745,7 @@ const products = [
     category: "conjuntos",
     price: 164.14,
     badge: "30% OFF",
-    image: "imagens/roupa75.jpeg",
+    image: "static/imagens/roupa75.jpeg",
     description: "Blusa acinturada de mangas longas em malha canelada cinza-mescla com detalhe de gola henley e acabamento interno rendado."
   },
   {
@@ -706,7 +754,7 @@ const products = [
     category: "blusas",
     price: 264.14,
     badge: "30% OFF",
-    image: "imagens/roupa76.jpeg",
+    image: "static/imagens/roupa76.jpeg",
     description: "Suéter em tricot felpudo cinza-mescla com decote V profundo alongado e sobreposição interna de renda preta no colo."
   },
   {
@@ -715,7 +763,7 @@ const products = [
     category: "conjuntos",
     price: 178.43,
     badge: "30% OFF",
-    image: "imagens/roupa77.jpeg",
+    image: "static/imagens/roupa77.jpeg",
     description: "Blusa de mangas longas com decote V e estampa de listras horizontais em tom bordô e branco, perfeita para o dia a dia."
   },
   {
@@ -724,7 +772,7 @@ const products = [
     category: "blusas",
     price: 142.71,
     badge: "30% OFF",
-    image: "imagens/roupa78.jpeg",
+    image: "static/imagens/roupa78.jpeg",
     description: "Camiseta em tom creme/off-white com decote canoa e estampa gráfica universitária estilo vintage com efeito desgastado."
   },
   {
@@ -733,7 +781,7 @@ const products = [
     category: "acessorios",
     price: 249.86,
     badge: "30% OFF",
-    image: "imagens/roupa79.jpeg",
+    image: "static/imagens/roupa79.jpeg",
     description: "Suéter acinturado em tricot preto macio com decote ombro a ombro drapeado e mangas compridas de caimento fluido."
   },
 
@@ -744,7 +792,7 @@ const products = [
     category: "acessorios",
     price: 128.43,
     badge: "30% OFF",
-    image: "imagens/roupa80.jpeg",
+    image: "static/imagens/roupa80.jpeg",
     description: "Conjunto praiano elegante banhado a dourado, contendo colar de estrelas e conchas com pérolas, piranha estruturada e anéis combinando."
   },
   {
@@ -753,7 +801,7 @@ const products = [
     category: "acessorios",
     price: 57.00,
     badge: "30% OFF",
-    image: "imagens/roupa81.jpeg",
+    image: "static/imagens/roupa81.jpeg",
     description: "Jogo de presilhas estilo tic-tac retrô com estampa poá (polka dot) nas cores vermelho, preto e branco para um visual vintage/coquette."
   },
   {
@@ -762,7 +810,7 @@ const products = [
     category: "acessorios",
     price: 71.28,
     badge: "30% OFF",
-    image: "imagens/roupa82.jpeg",
+    image: "static/imagens/roupa82.jpeg",
     description: "Cartela com presilhas e grampos prateados em formatos geométricos de estrelas vazadas e maciças. Estética pura dos anos 2000."
   },
   {
@@ -771,7 +819,7 @@ const products = [
     category: "blusas",
     price: 142.71,
     badge: "30% OFF",
-    image: "imagens/roupa83.jpeg",
+    image: "static/imagens/roupa83.jpeg",
     description: "Top acinturado em cetim preto com delicada estampa floral branca, decote V contrastante em off-white e alcinhas ajustáveis."
   },
   {
@@ -780,7 +828,7 @@ const products = [
     category: "acessorios",
     price: 92.71,
     badge: "30% OFF",
-    image: "imagens/roupa84.jpeg",
+    image: "static/imagens/roupa84.jpeg",
     description: "Conjunto de pulseiras artesanais compostas por búzios naturais, pedras turquesa, macramê trançado azul e pingentes metálicos praianos."
   },
   {
@@ -789,7 +837,7 @@ const products = [
     category: "acessorios",
     price: 65.57,
     badge: "30% OFF",
-    image: "imagens/roupa85.jpeg",
+    image: "static/imagens/roupa85.jpeg",
     description: "Trio de piranhas para cabelo em acrílico translúcido em formato de flor tropical em dégradé azul-piscina e cristal."
   },
   {
@@ -798,7 +846,7 @@ const products = [
     category: "blusas",
     price: 157.00,
     badge: "30% OFF",
-    image: "imagens/roupa86.jpeg",
+    image: "static/imagens/roupa86.jpeg",
     description: "Top frente única azul-marinho com decote franzido, estampa abstrata sutil e barra peplum fluida em babados."
   },
   {
@@ -807,7 +855,7 @@ const products = [
     category: "acessorios",
     price: 114.14,
     badge: "30% OFF",
-    image: "imagens/roupa87.jpeg",
+    image: "static/imagens/roupa87.jpeg",
     description: "Mix variado de brincos, argolas e gargantilhas com texturas metálicas em formatos de estrela-do-mar e conchas banhadas a ouro."
   },
   {
@@ -816,7 +864,7 @@ const products = [
     category: "acessorios",
     price: 61.28,
     badge: "30% OFF",
-    image: "imagens/roupa88.jpeg",
+    image: "static/imagens/roupa88.jpeg",
     description: "Kit de presilhas/piranhas de cabelo em formato de flor hibisco nas cores bordô marmorizado e preto brilhante."
   },
   {
@@ -825,17 +873,8 @@ const products = [
     category: "acessorios",
     price: 121.28,
     badge: "30% OFF",
-    image: "imagens/roupa89.jpeg",
+    image: "static/imagens/roupa89.jpeg",
     description: "Set elegante contendo piranha metálica dourada floral, pulseira delicada com pingentes de trevo de quatro folhas e anéis minimalistas."
-  },
-  {
-    id: "peca-roupa-90",
-    name: "Peça Roupa 90",
-    category: "calcas",
-    price: 128.43,
-    badge: "30% OFF",
-    image: "imagens/roupa90.jpeg",
-    description: "Descrição da peça 90 adicionada ao catálogo."
   }
 ];
 
